@@ -1,9 +1,7 @@
 import WikipediaProcessor
 
-def test_increment():
-    assert 4 == 4
-
-def test_wiki():
+def test_wiki_response():
     wp = WikipediaProcessor.WikipediaProcessor()
-    result = wp.get()
-    assert result == 5
+    resp = wp.get_input(10)
+    assert(len(resp.Prompt) == 10)
+    assert(len(resp.Expected_Generation) > 0)
