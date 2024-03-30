@@ -9,15 +9,24 @@ client = AzureOpenAI(
 )
 
 
+byteTimes = []
 start = time.time()
-response = client.chat.completions.create(
+stream = client.chat.completions.create(
     model="llm-runner-gpt4t-0125",
     messages=[
         {
             "role": "user",
             "content": "Say this is a test",
         }],
-    max_tokens=100)
-end=time.time()
-print(response)
-print(end-start)
+    max_tokens=100,    
+    stream=True,
+)
+for chunk in stream:
+    if not chunk.choices:
+        continue
+    end = time.time()
+    byteTimes.append(end-start)
+    start=end
+    print(chunk)
+
+print(byteTimes)
