@@ -24,4 +24,7 @@ class RequestInput:
 class ResponseOutput:
     samples: str
     time_taken: list[float]
+    finish_reason:str
+    n_prompts:int
+    n_gen:int
     edit_distance:int

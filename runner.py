@@ -19,6 +19,6 @@ if __name__ == "__main__":
     openai = getClient(ServiceProvider.OpenAI)
     azureopenai = getClient(ServiceProvider.AzureOpenAI, Region.EastUS)
     ip:InputProcessor = InputProcessor(WikiClient())
-    result = ip.getInput(ModelVersion.gpt4t0125, total_len=100, stream=None, min_prompt_len=50)
-    for i in result:
-        print(result)
+    result = ip.getInput(ModelVersion.gpt4t0125, total_len=10, stream=None, min_prompt_len=5)
+    # for i in result:
+    #     print(result, end="\n")

@@ -14,7 +14,7 @@ class WikiClient:
         return r_resp.url
 
     def get_random_page_text(self) -> Tuple[str, str]:
-        page = self.get_random_page()
+        page = self._get_random_page()
         page = page[WikiConstants.WIKI_PREFIX_LEN:]
         result = self.session.page(page).text
         return page, result
