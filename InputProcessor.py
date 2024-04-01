@@ -45,6 +45,7 @@ class InputProcessor:
         while token_len < total_len:
             page, text = self.dataSourceClient.get_random_page_text()            
             text = ' '.join(text.splitlines())
+            text = text.replace('\t', ' ')
             logging.info(f"Got {page=} of length {len(text)} for {total_len=} and {n_prompt=}")
             tokens = self.encoder.encode(text)
             token_len = len(tokens)
