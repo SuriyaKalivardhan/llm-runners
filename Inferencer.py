@@ -3,6 +3,8 @@ from StreamingRequestHandler import StreamingRequestHandler
 from RequestHandler import RequestHandler
 from io import TextIOWrapper
 from Utilities import Utilities
+import logging
+logging.basicConfig(level=logging.DEBUG)
 
 class Inferencer:
     def __init__(self, azure_region:Region):
@@ -18,6 +20,7 @@ class Inferencer:
 
     def score(self, requests:list[RequestInput]):
         for request in requests:
+            logging.info(f"Starting {request.model_version.name} {request.stream} {len(request.Prompt)/4} {request.max_token}")
             if request.stream:
                 for handler in self.streaming_handlers:
                     response = handler.score(request)

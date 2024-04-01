@@ -53,5 +53,4 @@ class StreamingRequestHandler:
         samples_str = ' '.join(samples)
         samples_str = ' '.join(samples_str.splitlines())
         result = ResponseOutput(samples_str, ttft, ttbt, ttlt, finish_reason, len(prompt_encoded), len(samples), 0) #TODO: calculate edit distance
-        logging.info(result)
         return result
