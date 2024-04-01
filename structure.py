@@ -23,7 +23,9 @@ class RequestInput:
 @dataclass
 class ResponseOutput:
     samples: str
-    time_taken: list[float]
+    time_to_first_token:float
+    time_between_tokens: list[float]
+    time_to_last_token: float
     finish_reason:str
     n_prompts:int
     n_gen:int

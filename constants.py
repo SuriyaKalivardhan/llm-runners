@@ -4,7 +4,7 @@ from typing import Final
 class AzureOpenAIConstansts:
     API_VERSION:Final[str]="2024-02-01"
     API_KEY:Final[str]="AZURE_OPENAI_API_KEY"
-    MODEL_DEPLOYMENTS = {
+    MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
         ModelVersion.gpt4t0125:'llm-runner-gpt4t-0125'
     }
     ENDPOINTS = {
@@ -12,7 +12,7 @@ class AzureOpenAIConstansts:
     }
 
 class OpenAIContants:
-    MODEL_DEPLOYMENTS = {
+    MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
         ModelVersion.gpt4t0125:'gpt-4-0125-preview'
     }
 
