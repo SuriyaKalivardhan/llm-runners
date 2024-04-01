@@ -1,5 +1,5 @@
 from openai.types.chat.chat_completion_chunk import ChatCompletionChunk
-from openai import Stream, AzureOpenAI, OpenAI
+from openai import Stream
 from structure import RequestInput, ResponseOutput, ServiceProvider, Region
 from Utilities import Utilities
 import time

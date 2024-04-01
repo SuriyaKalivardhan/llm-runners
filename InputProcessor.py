@@ -18,11 +18,11 @@ class InputProcessor:
         token_len = 0
         while token_len < total_len:
             page, text = self.dataSourceClient.get_random_page_text()
-            #logging.info(f"Got {page=} of length {len(text)} for {total_len=} and {n_prompt=}")
+            logging.info(f"Got {page=} of length {len(text)} for {total_len=} and {n_prompt=}")
             tokens = self.encoder.encode(text)
             token_len = len(tokens)
             if token_len < total_len:
-                #logging.info(f"{token_len=} is smaller {total_len=} retrying..")
+                logging.info(f"{token_len=} is smaller {total_len=} retrying another page..")
                 continue
             prompt_tokens = tokens[:n_prompt]
             expected_sample_tokens = tokens[n_prompt:]

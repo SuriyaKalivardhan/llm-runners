@@ -2,7 +2,6 @@ import requests
 import wikipediaapi
 from constants import WikiConstants
 from wikipediaapi import Wikipedia
-from typing import Final
 from typing import Tuple
 
 class WikiClient:
