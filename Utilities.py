@@ -1,8 +1,10 @@
 from openai import OpenAI, AzureOpenAI
 from constants import OpenAIContants, AzureOpenAIConstansts, ModelVersion
-from structure import ServiceProvider, Region
-import logging, os
+from structure import ServiceProvider, Region, RequestInput, ResponseOutput
+import logging, os, time
+from io import TextIOWrapper
 logging.basicConfig(level=logging.DEBUG)
+
 class Utilities:
     def get_model_version(model_version:ModelVersion, provider:ServiceProvider) -> str:
         if provider == ServiceProvider.OpenAI:            
@@ -21,4 +23,13 @@ class Utilities:
                 api_version=AzureOpenAIConstansts.API_VERSION,
                 azure_endpoint = AzureOpenAIConstansts.ENDPOINTS[region]
         )
+
+    def create_and_get_new_file() -> TextIOWrapper:        
+        timestr = time.strftime("%Y%m%d-%H%M%S")
+        f = open(f"/tmp/{timestr}.tsv", "a")
+        return f
+
+
+    def log(provider:ServiceProvider, req:RequestInput, resp:ResponseOutput):
+        return f"{provider.name}\t{req}\t{resp}\n"
 

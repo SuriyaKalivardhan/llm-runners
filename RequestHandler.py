@@ -28,6 +28,6 @@ class RequestHandler:
 
         end = time.time()
         choice = response.choices[0]
-
-        result = ResponseOutput(choice.message.content, None, None, end-start, choice.finish_reason, response.usage.prompt_tokens, response.usage.completion_tokens, 0) #TODO: calculate edit distance
+        samples_str = ' '.join(choice.message.content.splitlines())
+        result = ResponseOutput(samples_str, None, None, '%.6f'%(end-start), choice.finish_reason, response.usage.prompt_tokens, response.usage.completion_tokens, 0) #TODO: calculate edit distance
         return result

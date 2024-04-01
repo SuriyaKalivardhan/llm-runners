@@ -20,6 +20,9 @@ class RequestInput:
     stream:bool
     expected_samples:str
 
+    def __repr__(self) -> str:
+        return f"{self.model_version.name}\t{self.Prompt}\t{self.max_token}\t{self.stream}\t{self.expected_samples}"
+
 @dataclass
 class ResponseOutput:
     samples: str
@@ -30,3 +33,6 @@ class ResponseOutput:
     n_prompts:int
     n_gen:int
     edit_distance:int
+
+    def __repr__(self) -> str:
+        return f"{self.samples}\t{self.time_to_first_token}\t{self.time_between_tokens}\t{self.time_to_last_token}\t{self.finish_reason}\t{self.n_prompts}\t{self.n_gen}\t{self.edit_distance}"

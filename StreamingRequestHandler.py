@@ -45,11 +45,13 @@ class StreamingRequestHandler:
                 byteTimes.append(end-start)
                 start=end
 
-        ttft = byteTimes[0]
-        ttbt = byteTimes[1:]
-        ttlt = end-start_for_ttlt
+        ttft = '%.6f'%(byteTimes[0])
+        ttbt = ['%.6f'%(bt) for bt in byteTimes[1:]]
+        ttlt = '%.6f'%(end-start_for_ttlt)
 
         prompt_encoded = self.encoder.encode(req.Prompt)
-        result = ResponseOutput(samples, ttft, ttbt, ttlt, finish_reason, len(prompt_encoded), len(samples), 0) #TODO: calculate edit distance
+        samples_str = ' '.join(samples)
+        samples_str = ' '.join(samples_str.splitlines())
+        result = ResponseOutput(samples_str, ttft, ttbt, ttlt, finish_reason, len(prompt_encoded), len(samples), 0) #TODO: calculate edit distance
         logging.info(result)
         return result
