@@ -7,11 +7,15 @@ class ServiceProvider(Enum):
 
 class ModelVersion(Enum):
     gpt4t0125 = 1
+    gpt4t1106 = 2
 
 class Region(Enum):
     Global = 1
     EastUS = 2
-    SwedenCentral = 3
+    NorthCentralUS  = 3
+    SouthCentralUS = 4
+    WestUS = 5
+    SwedenCentral = 6
 
 @dataclass
 class RequestInput:

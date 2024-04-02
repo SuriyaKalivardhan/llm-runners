@@ -3,6 +3,7 @@ from constants import OpenAIContants, AzureOpenAIConstansts, ModelVersion
 from structure import ServiceProvider, Region, RequestInput, ResponseOutput
 import logging, os, time
 from io import TextIOWrapper
+from datetime import datetime
 logging.basicConfig(level=logging.DEBUG)
 
 class Utilities:
@@ -31,7 +32,7 @@ class Utilities:
 
 
     def log(provider:ServiceProvider, req:RequestInput, resp:ResponseOutput):
-        return f"{provider.name}\t{req.getStr()}\t{resp.getStr()}\n"
+        return f"{provider.name}\t{str(datetime.utcnow())}\t{req.getStr()}\t{resp.getStr()}\n"
     
     def get_all_possible_input_sizes(max_total_len:int, min_prompt_len:int=1, max_prompt_len:int=None, min_gen_len:int=1, max_gen_len:int=None) -> list[tuple[int, int]]:
         result = []
