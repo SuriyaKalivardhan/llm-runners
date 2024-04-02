@@ -2,7 +2,7 @@ from WikiClient import WikiClient
 from structure import ModelVersion, RequestInput
 import logging
 import tiktoken
-logging.basicConfig(level=logging.INFO)
+logging.basicConfig(level=logging.DEBUG)
 class InputProcessor:
     def __init__(self, dataSourceClient:WikiClient) -> None:
         self.dataSourceClient = dataSourceClient

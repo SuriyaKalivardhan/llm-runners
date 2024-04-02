@@ -31,5 +31,34 @@ class Utilities:
 
 
     def log(provider:ServiceProvider, req:RequestInput, resp:ResponseOutput):
-        return f"{provider.name}\t{req}\t{resp}\n"
+        return f"{provider.name}\t{req.getStr()}\t{resp.getStr()}\n"
+    
+    def get_all_possible_input_sizes(max_total_len:int, min_prompt_len:int=1, max_prompt_len:int=None, min_gen_len:int=1, max_gen_len:int=None) -> list[tuple[int, int]]:
+        result = []
+        max_prompt_len = max_total_len if max_prompt_len is None else max_prompt_len
+        max_gen_len = max_total_len if max_gen_len is None else max_gen_len
 
+        i = min_prompt_len
+        while i<max_prompt_len:
+            j = min_gen_len
+            while j<max_gen_len:
+                if i+j > max_total_len:
+                    break
+                result.append((i, j))
+                j = Utilities.tens_incr(j)
+
+            i = Utilities.tens_incr(i)
+        return result
+    
+
+    def tens_incr(x:int) -> int:
+        if x<10:
+            return x+1
+        elif x<100:
+            return x+10
+        elif x<1000:
+            return x+100
+        elif x<10000:
+            return x+1000
+        elif x<100000:
+            return x+10000

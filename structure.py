@@ -11,6 +11,7 @@ class ModelVersion(Enum):
 class Region(Enum):
     Global = 1
     EastUS = 2
+    SwedenCentral = 3
 
 @dataclass
 class RequestInput:
@@ -22,6 +23,9 @@ class RequestInput:
 
     def __repr__(self) -> str:
         return f"{self.model_version.name}\t{self.Prompt}\t{self.max_token}\t{self.stream}\t{self.expected_samples}"
+    
+    def getStr(self) -> str:
+        return f"{self.model_version.name}\tPROMPT\t{self.max_token}\t{self.stream}\t{self.expected_samples}"
 
 @dataclass
 class ResponseOutput:
@@ -36,3 +40,6 @@ class ResponseOutput:
 
     def __repr__(self) -> str:
         return f"{self.samples}\t{self.time_to_first_token}\t{self.time_between_tokens}\t{self.time_to_last_token}\t{self.finish_reason}\t{self.n_prompts}\t{self.n_gen}\t{self.edit_distance}"
+    
+    def getStr(self) -> str:
+        return f"PROMPT\t{self.time_to_first_token}\t{self.time_between_tokens[0]}\t{self.time_to_last_token}\t{self.finish_reason}\t{self.n_prompts}\t{self.n_gen}\t{self.edit_distance}"

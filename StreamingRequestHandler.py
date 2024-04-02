@@ -45,13 +45,18 @@ class StreamingRequestHandler:
                 byteTimes.append(end-start)
                 start=end
 
-        ttft = '%.6f'%(byteTimes[0])
-        ttbt = ['%.6f'%(bt) for bt in byteTimes[1:]]
-        ttlt = '%.6f'%(end-start_for_ttlt)
+        ttft = byteTimes[0]
+        ttlt = end-start_for_ttlt
+        ttbt = (ttlt-ttft)/len(samples)
+
+        ttft = '%.6f'%(ttft)
+        #tbt = ['%.6f'%(bt) for bt in byteTimes[1:]]
+        ttlt = '%.6f'%(ttlt)
+        ttbt = '%.6f'%(ttbt)
 
         prompt_encoded = self.encoder.encode(req.Prompt)
         samples_str = ' '.join(samples)
-        samples_str = ' '.join(samples_str.splitlines())        
+        samples_str = ' '.join(samples_str.splitlines())
         samples_str = samples_str.replace('\t', ' ')
-        result = ResponseOutput(samples_str, ttft, ttbt, ttlt, finish_reason, len(prompt_encoded), len(samples), 0) #TODO: calculate edit distance
+        result = ResponseOutput(samples_str, ttft, [ttbt], ttlt, finish_reason, len(prompt_encoded), len(samples), 0) #TODO: calculate edit distance
         return result

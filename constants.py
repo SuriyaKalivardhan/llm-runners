@@ -8,7 +8,8 @@ class AzureOpenAIConstansts:
         ModelVersion.gpt4t0125:'llm-runner-gpt4t-0125'
     }
     ENDPOINTS = {
-        Region.EastUS:"https://eng-latency.openai.azure.com/"
+        Region.EastUS:"https://eng-latency.openai.azure.com/",
+        Region.SwedenCentral:"https://eng-latency-sw.openai.azure.com/",
     }
 
 class OpenAIContants:
