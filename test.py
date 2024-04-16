@@ -5,40 +5,60 @@ kusto_ingestion_uri = "https://ingest-llm-runners.eastus.kusto.windows.net"
 kusto_database = "llm-runner"
 import requests
 
-def fetch_token_from_imds(resource_url='https://management.azure.com/'):
-    imds_url = 'http://169.254.169.254/metadata/identity/oauth2/token'
+imds_url = 'http://169.254.169.254/metadata/identity/oauth2/token'
 
-    params = {
-        'api-version': '2018-02-01',
-        'resource': resource_url 
-    }
+params = {
+    'api-version': '2018-02-01',
+    'resource': kusto_ingestion_uri 
+}
 
-    headers = {
-        'Metadata': 'true'
-    }
+headers = {
+    'Metadata': 'true'
+}
 
-    try:
-        response = requests.get(imds_url, params=params, headers=headers, timeout=10)
-        response.raise_for_status()
-        data = response.json()
-        access_token = data['access_token']
-        return access_token
+try:
+    response = requests.get(imds_url, params=params, headers=headers, timeout=10)
+    response.raise_for_status()
+    data = response.json()
+    access_token = data['access_token']
+    print(access_token)
+    print(data)
 
-    except requests.exceptions.RequestException as e:
-        print(f"Failed to fetch token from IMDS: {e}")
-        return None
+    import io
+    import time
+    from datetime import datetime, timezone
+    from azure.kusto.data import DataFormat
+    from azure.kusto.ingest import QueuedIngestClient, IngestionProperties, FileDescriptor, BlobDescriptor, ReportLevel, ReportMethod
+    from azure.kusto.data import KustoClient, KustoConnectionStringBuilder
+    from azure.kusto.data.exceptions import KustoServiceError
+    from azure.kusto.data.helpers import dataframe_from_result_table
+    KCSB_INGEST   = KustoConnectionStringBuilder.with_aad_user_token_authentication(kusto_ingestion_uri, access_token)
+    INGESTION_CLIENT = QueuedIngestClient(KCSB_INGEST)    
+    n_prompt= 123
+    n_gen=456
+    ttft=0.0
+    mean_tbt=0.0
+    ttlt=0.0
+    Region='TestRegion'
+    pbool = True
+    ModelVersion='TestModelVersion'
+    for _ in range(1000):
+        p_time = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S.%f")
+        provider = 'openai' if pbool else 'azure'
+        content = io.StringIO(f"{p_time}\t{Region}\t{ModelVersion}\t{provider}\t{n_prompt}\t{n_gen}\t{ttft:.4f}\t{mean_tbt:.4f}\t{ttlt:.4f}")
+        print(f"Ingesting {content.getvalue()}")
+        INGESTION_PROPERTIES = IngestionProperties(database=kusto_database, table="InferencingEvents", data_format=DataFormat.TSV,
+                                           ingestion_mapping_reference="InferencingEvents_TSV_Mapping", additional_properties={'ignoreFirstRecord': 'false'})
 
-if __name__ == "__main__":
-    resource = 'https://management.azure.com/'
-    token = fetch_token_from_imds(resource)
-    print("Access Token:", token)
+        INGESTION_CLIENT.ingest_from_stream(content, ingestion_properties=INGESTION_PROPERTIES)
+        time.sleep(3)
+        n_prompt +=1
+        n_gen +=1
+        ttft +=0.1
+        mean_tbt += 0.1
+        ttlt += 0.1
+        pbool = not pbool
 
 
-### Explanation
-- **URL and Endpoint**: The IMDS endpoint used is `http://169.254.169.254/metadata/identity/oauth2/token`. This URL is standard for accessing the IMDS.
-- **Parameters**:
-  - `api-version`: Specifies the API version to use; "2018-02-01" is a common version.
-  - `resource`: Specify the Azure resource URL you want the token for. In this case, it’s set to manage Azure resources (`https://management.azure.com/`).
-- **Headers**: The header `Metadata: true` is essential to make requests to the IMDS to indicate that the call is made from within an Azure VM.
-
-This script is ready to be used within an Azure VM that has been assigned a Managed Identity and provided appropriate access roles to fetch tokens for the specified resources. It's a straightforward method to obtain authentication credentials without hardcoding them in your applications.
+except requests.exceptions.RequestException as e:
+    print(f"Failed to fetch token from IMDS: {e}")
