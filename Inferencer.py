@@ -36,8 +36,9 @@ class Inferencer:
                 try:
                     response = handler.score(request)
                     self.metricsWriter.writeMetrics(requestTime, handler.provider, request, response)
-                except:
-                    logging.critical("Exception caught")
+                except Exception as e:
+                    import traceback
+                    logging.critical(traceback.format_exc())
             back_off = Utilities.get_back_off_time(n_prompt+n_samples)
             logging.info(f"{back_off=}")
             time.sleep(back_off)

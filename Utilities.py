@@ -40,7 +40,7 @@ class Utilities:
             while j>0:
                 y = random.randint(min_gen_len, max_gen_len)
                 j-=1
-                result.append(x, y)
+                result.append((x, y))
         return result
     
     def get_back_off_time(total_tokens:int) -> float:

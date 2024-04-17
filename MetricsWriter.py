@@ -21,9 +21,9 @@ class MetricsWriter:
 
     def writeMetrics(self, requestTime:datetime, provider:ServiceProvider, request:RequestInput, response:ResponseOutput):        
         requestTime_str = requestTime.strftime("%Y-%m-%d %H:%M:%S.%f")
-        logline_str = f"{requestTime_str}\t{self.region}\t{request.model_version.name}\t{provider.name}\t{response.n_prompts}\t{response.n_gen}\t{request.stream}\t{response.finish_reason}\t{response.time_to_first_token:.4f}\t{response.mean_time_between_tokens:.4f}\t{response.time_to_last_token:.4f}"
+        logline_str = f"{requestTime_str}\t{self.region.name}\t{request.model_version.name}\t{provider.name}\t{response.n_prompts}\t{response.n_gen}\t{request.stream}\t{response.finish_reason}\t{response.time_to_first_token}\t{response.mean_time_between_tokens}\t{response.time_to_last_token}"
         
-        self.file.write(logline_str)
+        self.file.write(logline_str+"\n")
         self.file.flush()
         
         if self.kustoClient is not None:
