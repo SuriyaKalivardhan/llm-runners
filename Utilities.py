@@ -17,12 +17,15 @@ class Utilities:
 
     def getClient(provider:ServiceProvider, region:Region = None) -> OpenAI | AzureOpenAI:
         if provider == ServiceProvider.OpenAI:
-            return OpenAI()
+            return OpenAI(
+                max_retries=0
+            )
         elif provider == ServiceProvider.AzureOpenAI:
             return AzureOpenAI(
                 api_key=os.getenv(AzureOpenAIConstansts.API_KEY),
                 api_version=AzureOpenAIConstansts.API_VERSION,
-                azure_endpoint = AzureOpenAIConstansts.ENDPOINTS[region]
+                azure_endpoint = AzureOpenAIConstansts.ENDPOINTS[region],
+                max_retries=0
         )
 
     def create_and_get_new_file() -> TextIOWrapper:

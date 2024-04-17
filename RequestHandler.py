@@ -3,7 +3,7 @@ from structure import RequestInput, ResponseOutput, ServiceProvider, Region
 from Utilities import Utilities
 import time
 import logging
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 
 class RequestHandler:
     def __init__(self, provider:ServiceProvider, region:Region = Region.Global):        

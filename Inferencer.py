@@ -1,4 +1,4 @@
-from structure import ServiceProvider, Region, RequestInput, ModelVersion, Environment
+from structure import ServiceProvider, Region, RequestInput, ModelVersion, Environment, ResponseOutput
 from StreamingRequestHandler import StreamingRequestHandler
 from RequestHandler import RequestHandler
 from Utilities import Utilities
@@ -6,7 +6,7 @@ from WikiClient import WikiClient
 import logging
 import tiktoken
 from datetime import datetime, timezone
-import time
+import time, threading, traceback
 from MetricsWriter import MetricsWriter
 
 logging.basicConfig(level=logging.INFO)
@@ -31,17 +31,28 @@ class Inferencer:
         for n_prompt, n_samples in candidates:
             request = self._getInput(model_version, n_prompt, n_samples, True)
             logging.info(request)
-            for handler in self.streaming_handlers:
-                requestTime = datetime.now(timezone.utc)
-                try:
-                    response = handler.score(request)
-                    self.metricsWriter.writeMetrics(requestTime, handler.provider, request, response)
-                except Exception as e:
-                    import traceback
-                    logging.critical(traceback.format_exc())
+            threads = []
+
+            for handler in self.streaming_handlers:                
+                threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
+                
+            for t in threads:
+                t.start()
+
+            for t in threads:
+                t.join()
+                
             back_off = Utilities.get_back_off_time(n_prompt+n_samples)
             logging.info(f"{back_off=}")
             time.sleep(back_off)
+    
+    def invokeHandler(self, handler:StreamingRequestHandler, request:RequestInput):
+        requestTime = datetime.now(timezone.utc)
+        try:
+            response = handler.score(request)
+            self.metricsWriter.writeMetrics(requestTime, handler.provider, request, response)
+        except Exception as e:
+            logging.critical(traceback.format_exc())
 
     def close(self):
         self.metricsWriter.close()
@@ -54,11 +65,11 @@ class Inferencer:
             page, text = self.dataSourceClient.get_random_page_text()            
             text = ' '.join(text.splitlines())
             text = text.replace('\t', ' ')
-            logging.info(f"Got {page=} of length {len(text)} for {total_len=} and {n_prompt=}")
+            #logging.info(f"Got {page=} of length {len(text)} for {total_len=} and {n_prompt=}")
             tokens = self.encoder.encode(text)
             token_len = len(tokens)
             if token_len < total_len:
-                logging.info(f"{token_len=} is smaller {total_len=} retrying another page..")
+                #logging.info(f"{token_len=} is smaller {total_len=} retrying another page..")
                 continue
             prompt_tokens = tokens[:n_prompt]
             # expected_sample_tokens = tokens[n_prompt:]

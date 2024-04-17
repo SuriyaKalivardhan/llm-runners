@@ -18,4 +18,5 @@ if __name__ == "__main__":
     parser.add_argument('-r', '--region', type=str, default=Region.EastUS.name, choices=Region.as_list())    
     parser.add_argument('-m', '--model_version', type=str, default=ModelVersion.gpt4t0125.name, choices=ModelVersion.as_list())
     args = parser.parse_args()
-    main(Environment[args.environment], Region[args.region], ModelVersion[args.model_version])
+    while True:
+        main(Environment[args.environment], Region[args.region], ModelVersion[args.model_version])
