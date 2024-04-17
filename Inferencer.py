@@ -5,6 +5,7 @@ from Utilities import Utilities
 from WikiClient import WikiClient
 import logging
 import tiktoken
+from datetime import datetime, timezone
 import time
 from MetricsWriter import MetricsWriter
 
@@ -31,9 +32,10 @@ class Inferencer:
             request = self._getInput(model_version, n_prompt, n_samples, True)
             logging.info(request)
             for handler in self.streaming_handlers:
+                requestTime = datetime.now(timezone.utc)
                 try:
                     response = handler.score(request)
-                    self.metricsWriter.writeMetrics(handler.provider, request, response)
+                    self.metricsWriter.writeMetrics(requestTime, handler.provider, request, response)
                 except:
                     logging.critical("Exception caught")
             back_off = Utilities.get_back_off_time(n_prompt+n_samples)
