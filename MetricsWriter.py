@@ -5,7 +5,7 @@ from io import TextIOWrapper
 from datetime import datetime
 from azure.kusto.ingest import QueuedIngestClient, IngestionProperties
 from azure.kusto.data import KustoConnectionStringBuilder, DataFormat
-import requests, logging, io
+import requests, logging, io, threading
 logging.basicConfig(level=logging.INFO)
 
 class MetricsWriter:
@@ -29,7 +29,8 @@ class MetricsWriter:
         if self.kustoClient is not None:
             self.kustoClient.ingest_from_stream(io.StringIO(logline_str), ingestion_properties=self.INGESTION_PROPERTIES)
         
-    def refresh_kusto_client(self):
+    def refresh_kusto_client(self):        
+        threading.Timer(3600.0, self.refresh_kusto_client).start()
         params = {
             'api-version': '2018-02-01',
             'resource': KustoConstants.KUSTO_INGEST_URI
