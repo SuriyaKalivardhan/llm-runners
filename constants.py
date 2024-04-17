@@ -12,7 +12,7 @@ class AzureOpenAIConstansts:
         Region.EastUS:"https://eng-latency.openai.azure.com/",
         Region.NorthCentralUS:"https://eng-latency-ncus.openai.azure.com/",
         Region.SouthCentralUS:"https://eng-latency-scus.openai.azure.com/",
-        Region.WestUS:"https://eng-latency.openai-wus.azure.com/",
+        Region.WestUS:"https://eng-latency-wus.openai.azure.com/",
         Region.SwedenCentral:"https://eng-latency-sw.openai.azure.com/",
     }
 
