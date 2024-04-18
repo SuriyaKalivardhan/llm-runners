@@ -5,8 +5,9 @@ class AzureOpenAIConstansts:
     API_VERSION:Final[str]="2024-02-01"
     API_KEY:Final[str]="AZURE_OPENAI_API_KEY"
     MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
-        ModelVersion.gpt4t0125:'llm-runner-gpt4t-0125',        
-        ModelVersion.gpt4t1106:'llm-runner-gpt4t-1106'
+        ModelVersion.gpt4t0125:'llm-runner-gpt4t-0125',
+        ModelVersion.gpt4t1106:'llm-runner-gpt4t-1106',
+        ModelVersion.gpt40613:'llm-runner-gpt4-0613'
     }
     ENDPOINTS = {
         Region.EastUS:"https://eng-latency.openai.azure.com/",
@@ -14,12 +15,14 @@ class AzureOpenAIConstansts:
         Region.SouthCentralUS:"https://eng-latency-scus.openai.azure.com/",
         Region.WestUS:"https://eng-latency-wus.openai.azure.com/",
         Region.SwedenCentral:"https://eng-latency-sw.openai.azure.com/",
+        Region.UKSouth:"https://eng-latency-uks.openai.azure.com/",
     }
 
 class OpenAIContants:
     MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
         ModelVersion.gpt4t0125:'gpt-4-0125-preview',
-        ModelVersion.gpt4t1106:'gpt-4-1106-preview'
+        ModelVersion.gpt4t1106:'gpt-4-1106-preview',
+        ModelVersion.gpt40613:'gpt-4-0613'
     }
 
 class WikiConstants:    

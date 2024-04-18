@@ -8,6 +8,7 @@ class ServiceProvider(Enum):
 class ModelVersion(Enum):
     gpt4t0125 = 1
     gpt4t1106 = 2
+    gpt40613 = 3
 
     def as_list():
         [e.name for e in Region]
@@ -19,6 +20,7 @@ class Region(Enum):
     SouthCentralUS = 4
     WestUS = 5
     SwedenCentral = 6
+    UKSouth = 7
 
     def as_list():
         [e.name for e in Region]
