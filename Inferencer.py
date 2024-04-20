@@ -5,6 +5,7 @@ from Utilities import Utilities
 from WikiClient import WikiClient
 import logging
 import tiktoken
+from pathlib import Path
 from datetime import datetime, timezone
 import time, threading, traceback
 from MetricsWriter import MetricsWriter
@@ -41,6 +42,8 @@ class Inferencer:
 
             for t in threads:
                 t.join()
+
+            Path.touch("/tmp/livenessprobe.py")
                 
             back_off = Utilities.get_back_off_time(n_prompt+n_samples)
             logging.info(f"{back_off=}")

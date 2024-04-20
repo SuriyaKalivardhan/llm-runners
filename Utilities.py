@@ -4,6 +4,7 @@ from structure import ServiceProvider, Region
 import logging, os, time
 from io import TextIOWrapper
 import random
+import sys
 logging.basicConfig(level=logging.INFO)
 
 class Utilities:
@@ -33,6 +34,12 @@ class Utilities:
         f = open(f"/tmp/{timestr}.tsv", "a")
         return f
 
+    def construct_candidates( rpm:int, num_prompts:int, num_samples:int) -> list[tuple[int, int]]:
+        if num_prompts != sys.maxsize and num_samples != sys.maxsize:
+            return [(num_prompts, num_samples) for _ in range(rpm*60)]
+        else:
+            return Utilities.get_uniform_distributed_candidates()
+
     def get_uniform_distributed_candidates(min_prompt_len:int=50, max_prompt_len:int=5000, min_gen_len:int=10, max_gen_len:int=1000) -> list[tuple[int, int]]:
         result = []
         i=10
@@ -45,6 +52,6 @@ class Utilities:
                 j-=1
                 result.append((x, y))
         return result
-    
+
     def get_back_off_time(total_tokens:int) -> float:
         return (total_tokens*1.0)/(60000/60)
