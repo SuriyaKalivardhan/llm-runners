@@ -29,6 +29,7 @@ class Inferencer:
         self.metricsWriter = MetricsWriter(environment, azure_region)
 
     def score_stream(self, candidates:tuple[int, int], model_version: ModelVersion = ModelVersion.gpt4t0125) -> list[RequestInput]:
+        Path.touch("/tmp/livenessprobe.py")
         for n_prompt, n_samples in candidates:
             request = self._getInput(model_version, n_prompt, n_samples, True)
             logging.info(request)
