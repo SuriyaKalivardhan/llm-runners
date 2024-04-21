@@ -1,0 +1,42 @@
+apiVersion: 2019-12-01
+location: SwedenCentral
+name: llm-runner-swc
+identity: 
+  type: UserAssigned
+  userAssignedIdentities:
+    {
+      '/subscriptions/ea4faa5b-5e44-4236-91f6-5483d5b17d14/resourcegroups/llm-runners/providers/Microsoft.ManagedIdentity/userAssignedIdentities/llm-runner' :{},
+    }
+properties:
+  containers:
+  - name: llm-runner
+    properties:
+      image: suriyakalivardhan/llm-runners:v9
+      command:
+        - "python"
+        - "runner.py"
+        - "-r=SwedenCentral"
+        - "-m=gpt4t1106"
+        - "-rpm=2"
+        - "-np=1000"
+        - "-ns=200"
+      ports: []
+      resources:
+        requests:
+          cpu: 2.0
+          memoryInGB: 4.0
+      livenessProbe:
+        exec:
+            command:
+                - "python"
+                - "liveness.py"
+        periodSeconds: 60
+      environmentVariables:
+      - name: OPENAI_API_KEY
+        secureValue: abcd
+      - name: AZURE_OPENAI_API_KEY
+        secureValue: xyz
+  osType: Linux
+  restartPolicy: Always
+tags: null
+type: Microsoft.ContainerInstance/containerGroups
