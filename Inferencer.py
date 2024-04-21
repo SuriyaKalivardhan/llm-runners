@@ -30,9 +30,9 @@ class Inferencer:
 
     def score_stream(self, candidates:tuple[int, int], model_version: ModelVersion = ModelVersion.gpt4t0125) -> list[RequestInput]:
         Path.touch("/tmp/livenessprobe.py")
-        for n_prompt, n_samples in candidates:
+        for idx, (n_prompt, n_samples) in enumerate(candidates):
             request = self._getInput(model_version, n_prompt, n_samples, True)
-            logging.info(request)
+            logging.info(f"{idx=} {request=}")
             threads = []
 
             for handler in self.streaming_handlers:                
