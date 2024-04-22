@@ -11,7 +11,7 @@ class ModelVersion(Enum):
     gpt40613 = 3
 
     def as_list():
-        [e.name for e in Region]
+        [e.name for e in ModelVersion]
 
 class Region(Enum):
     Global = 1
