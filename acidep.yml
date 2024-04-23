@@ -1,6 +1,6 @@
 apiVersion: 2019-12-01
-location: SwedenCentral
-name: llm-runner-swc
+location: FranceCentral
+name: llm-runner-frac
 identity: 
   type: UserAssigned
   userAssignedIdentities:
@@ -11,11 +11,11 @@ properties:
   containers:
   - name: llm-runner
     properties:
-      image: suriyakalivardhan/llm-runners:v9
+      image: suriyakalivardhan/llm-runners:v12
       command:
         - "python"
         - "runner.py"
-        - "-r=SwedenCentral"
+        - "-r=FranceCentral"
         - "-m=gpt4t1106"
         - "-rpm=2"
         - "-np=1000"
@@ -33,9 +33,9 @@ properties:
         periodSeconds: 60
       environmentVariables:
       - name: OPENAI_API_KEY
-        secureValue: abcd
+        secureValue: abc
       - name: AZURE_OPENAI_API_KEY
-        secureValue: xyz
+        secureValue: def
   osType: Linux
   restartPolicy: Always
 tags: null
