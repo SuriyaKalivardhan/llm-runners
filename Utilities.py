@@ -1,10 +1,11 @@
 from openai import OpenAI, AzureOpenAI
-from constants import OpenAIContants, AzureOpenAIConstansts, ModelVersion
+from constants import OpenAIContants, AzureOpenAIConstansts, ModelVersion, ApplicationConstants
 from structure import ServiceProvider, Region
 import logging, os, time
 from io import TextIOWrapper
 import random
 import sys
+from pathlib import Path
 logging.basicConfig(level=logging.INFO)
 
 class Utilities:
@@ -55,3 +56,8 @@ class Utilities:
 
     def get_back_off_time(total_tokens:int) -> float:
         return (total_tokens*1.0)/(60000/60)
+    
+
+    def touch_for_liveness() -> None:
+        with Path(ApplicationConstants.LivenessFile) as f:
+            f.touch()

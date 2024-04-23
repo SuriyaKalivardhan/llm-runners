@@ -25,4 +25,4 @@ if __name__ == "__main__":
     parser.add_argument('-ns', '--num_samples', type=int, default=sys.maxsize)
     args = parser.parse_args()
     while True:
-        main(Environment[args.environment], Region[args.region], ModelVersion.as_list_from_str(args.model_version), args.request_per_minute, args.num_prompts, args.num_samples)
+        main(Environment[args.environment], Region[args.region], ModelVersion.as_list_from_str(args.model_versions), args.request_per_minute, args.num_prompts, args.num_samples)

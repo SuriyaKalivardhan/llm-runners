@@ -31,7 +31,7 @@ class Inferencer:
         self.metricsWriter = MetricsWriter(environment, azure_region)
 
     def score_stream(self, candidates:tuple[int, int], model_versions: List[ModelVersion] = [ModelVersion.gpt4t0125]):
-        Path.touch(ApplicationConstants.LivenessFile)
+        Utilities.touch_for_liveness()
         for idx, (n_prompt, n_samples) in enumerate(candidates):
             request = self._getInput(model_versions[0], n_prompt, n_samples, True)
             for model_version in model_versions:
@@ -48,7 +48,7 @@ class Inferencer:
                 for t in threads:
                     t.join()
 
-                Path.touch(ApplicationConstants.LivenessFile)
+                Utilities.touch_for_liveness()
 
                 back_off = Utilities.get_back_off_time(n_prompt+n_samples)
                 logging.info(f"{back_off=}")
