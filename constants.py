@@ -16,10 +16,10 @@ class AzureOpenAIConstansts:
         Region.WestUS:"https://eng-latency-wus.openai.azure.com/",
         Region.SwedenCentral:"https://eng-latency-sw.openai.azure.com/",
         Region.UKSouth:"https://eng-latency-uks.openai.azure.com/",
-        Region.FranceCentral:"https://eng-latency-frac.openai.azure.com/",
-        Region.AustraliaEast:"https://eng-latency-ause.openai.azure.com/",
-        Region.JapanEast:"https://eng-latency-jape.openai.azure.com/",
-        Region.SouthIndia:"https://eng-latency-inds.openai.azure.com/",
+        Region.FranceCentral:"https://francecentral.api.cognitive.microsoft.com/",
+        Region.AustraliaEast:"https://australiaeast.api.cognitive.microsoft.com/",
+        Region.JapanEast:"https://japaneast.api.cognitive.microsoft.com/",
+        Region.SouthIndia:"https://southindia.api.cognitive.microsoft.com/",
     }
 
 class OpenAIContants:
