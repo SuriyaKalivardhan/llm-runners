@@ -16,6 +16,10 @@ class AzureOpenAIConstansts:
         Region.WestUS:"https://eng-latency-wus.openai.azure.com/",
         Region.SwedenCentral:"https://eng-latency-sw.openai.azure.com/",
         Region.UKSouth:"https://eng-latency-uks.openai.azure.com/",
+        Region.FranceCentral:"https://eng-latency-frac.openai.azure.com/",
+        Region.AustraliaEast:"https://eng-latency-ause.openai.azure.com/",
+        Region.JapanEast:"https://eng-latency-jape.openai.azure.com/",
+        Region.SouthIndia:"https://eng-latency-inds.openai.azure.com/",
     }
 
 class OpenAIContants:
@@ -38,3 +42,6 @@ class KustoConstants:
     KUSTO_DATABASE: Final[str] = "llm-runner"
     KUSTO_TABLE: Final[str] = "InferencingEvents"
     KUSTO_MAPPING_REFERENCE= "InferencingEvents_TSV_Mapping"
+
+class ApplicationConstants:
+    LivenessFile = "/tmp/livenessprobe.txt"

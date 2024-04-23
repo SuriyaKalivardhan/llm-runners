@@ -1,6 +1,7 @@
 from structure import ServiceProvider, Region, RequestInput, ModelVersion, Environment, ResponseOutput
 from StreamingRequestHandler import StreamingRequestHandler
 from RequestHandler import RequestHandler
+from constants import ApplicationConstants
 from Utilities import Utilities
 from WikiClient import WikiClient
 import logging
@@ -9,6 +10,7 @@ from pathlib import Path
 from datetime import datetime, timezone
 import time, threading, traceback
 from MetricsWriter import MetricsWriter
+from typing import List
 
 logging.basicConfig(level=logging.INFO)
 
@@ -28,27 +30,29 @@ class Inferencer:
 
         self.metricsWriter = MetricsWriter(environment, azure_region)
 
-    def score_stream(self, candidates:tuple[int, int], model_version: ModelVersion = ModelVersion.gpt4t0125) -> list[RequestInput]:
-        Path.touch("/tmp/livenessprobe.py")
+    def score_stream(self, candidates:tuple[int, int], model_versions: List[ModelVersion] = [ModelVersion.gpt4t0125]):
+        Path.touch(ApplicationConstants.LivenessFile)
         for idx, (n_prompt, n_samples) in enumerate(candidates):
-            request = self._getInput(model_version, n_prompt, n_samples, True)
-            logging.info(f"{idx=} {request=}")
-            threads = []
+            request = self._getInput(model_versions[0], n_prompt, n_samples, True)
+            for model_version in model_versions:
+                request.model_version = model_version
+                logging.info(f"{idx=} {request=}")
+                threads = []
 
-            for handler in self.streaming_handlers:                
-                threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
-                
-            for t in threads:
-                t.start()
+                for handler in self.streaming_handlers:
+                    threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
 
-            for t in threads:
-                t.join()
+                for t in threads:
+                    t.start()
 
-            Path.touch("/tmp/livenessprobe.py")
-                
-            back_off = Utilities.get_back_off_time(n_prompt+n_samples)
-            logging.info(f"{back_off=}")
-            time.sleep(back_off)
+                for t in threads:
+                    t.join()
+
+                Path.touch(ApplicationConstants.LivenessFile)
+
+                back_off = Utilities.get_back_off_time(n_prompt+n_samples)
+                logging.info(f"{back_off=}")
+                time.sleep(back_off)
     
     def invokeHandler(self, handler:StreamingRequestHandler, request:RequestInput):
         requestTime = datetime.now(timezone.utc)

@@ -11,7 +11,11 @@ class ModelVersion(Enum):
     gpt40613 = 3
 
     def as_list():
-        [e.name for e in ModelVersion]
+        return [e.name for e in ModelVersion]
+
+    def as_list_from_str(input:str):
+        list_str = str.split(input,',')
+        return [ModelVersion[item] for item in list_str]
 
 class Region(Enum):
     Global = 1
@@ -21,9 +25,13 @@ class Region(Enum):
     WestUS = 5
     SwedenCentral = 6
     UKSouth = 7
+    FranceCentral = 8
+    AustraliaEast = 9
+    JapanEast = 10
+    SouthIndia = 11
 
     def as_list():
-        [e.name for e in Region]
+        return [e.name for e in Region]
 
 @dataclass
 class RequestInput:
@@ -50,4 +58,4 @@ class Environment(Enum):
     Cloud = 2
 
     def as_list():
-        [e.name for e in Environment]
+        return [e.name for e in Environment]

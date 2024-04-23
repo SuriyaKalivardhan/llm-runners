@@ -1,8 +1,9 @@
 import logging, os, time
+from constants import ApplicationConstants
 logging.basicConfig(level=logging.INFO)
 
 def check_liveness():
-    filename = "/tmp/livenessprobe.py"
+    filename = ApplicationConstants.LivenessFile
     mtime = os.path.getmtime(filename)
     ctime = time.ctime(mtime)
     logging.info(f"File {filename=} was last touched at {ctime=} curtime: {time.time()}")
