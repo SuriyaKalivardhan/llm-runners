@@ -16,6 +16,11 @@ az cognitiveservices account create --name eng-latency-inds --location SouthIndi
 
 
 
+az cognitiveservices account deployment create --name eng-latency-wus --deployment-name llm-runner-textemb3-l --model-name text-embedding-3-large --model-version 1 --model-format OpenAI --sku-capacity 240 --sku-name "Standard"
+az cognitiveservices account deployment create --name eng-latency-wus --deployment-name llm-runner-textemb3-s --model-name text-embedding-3-small --model-version 1 --model-format OpenAI --sku-capacity 240 --sku-name "Standard"
+az cognitiveservices account deployment create --name eng-latency-wus --deployment-name llm-runner-gpt35t-0613 --model-name gpt-35-turbo --model-version 0613 --model-format OpenAI --sku-capacity 240 --sku-name "Standard"
+
+
 az cognitiveservices account keys list --name eng-latency-frac  --subscription 6a6fff00-4464-4eab-a6b1-0b533c7202e0 -g haakar | jq -r .key1
 az cognitiveservices account keys list --name eng-latency-inds  --subscription 6a6fff00-4464-4eab-a6b1-0b533c7202e0 -g haakar | jq -r .key1
 az cognitiveservices account keys list --name eng-latency-swc  --subscription 6a6fff00-4464-4eab-a6b1-0b533c7202e0 -g haakar | jq -r .key1
@@ -24,5 +29,14 @@ az cognitiveservices account keys list --name eng-latency-uks  --subscription 6a
 
 
 
-az cognitiveservices account deployment create --name eng-latency-frac --subscription 6a6fff00-4464-4eab-a6b1-0b533c7202e0 -g haakar --deployment-name llm-runner-gpt4t-1106 --model-name gpt-4 --model-version "1106-preview" --sku-name "Standard"
+
+EastUS: gpt4t0125,gpt35t0613,textembeddings3large,textembeddings3small
+FranceCentral: gpt4t1106,gpt35t0613,textembeddings3large
+IndiaSouth: gpt4t1106
+JapanEast: gpt35t0613
+NorthCentralUS: gpt4t0125,gpt35t0613
+SwedenCentral: gpt40613,gpt4t1106,textembeddings3large
+UKSouth: gpt40613,gpt4t1106,gpt35t0613
+WestUS: gpt4t1106
+
 

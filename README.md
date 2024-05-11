@@ -43,3 +43,19 @@ SwedenCentral|4/19/2024
 - For access to dashboard - please provide your ObjectId to one of the owners.
 
 
+
+### Latest update (5/11) ###
+
+Region|ModelVersion
+:-:|:-
+EastUS|gpt4t0125,gpt35t0613,textembeddings3large,textembeddings3small
+FranceCentral|gpt4t1106,gpt35t0613,textembeddings3large
+IndiaSouth|gpt4t1106
+JapanEast|gpt35t0613
+NorthCentralUS|gpt4t0125,gpt35t0613
+SwedenCentral|gpt40613,gpt4t1106,textembeddings3large
+UKSouth|gpt40613,gpt4t1106,gpt35t0613
+WestUS|gpt4t1106
+
+
+
