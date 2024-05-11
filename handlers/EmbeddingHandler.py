@@ -16,8 +16,6 @@ class EmbeddingHandler:
         back_off = 5.0
         while True:
             try:
-                samples = []
-
                 start = time.time()
                 response:CreateEmbeddingResponse = self.client.embeddings.create(
                     input=req.Prompt,
@@ -26,8 +24,7 @@ class EmbeddingHandler:
                 
                 end = time.time()
 
-                ttft = ttlt = end-start
-                ttbt = 0.0
+                ttft = ttlt = ttbt = end-start
 
                 ttft = '%.6f'%(ttft)
                 #tbt = ['%.6f'%(bt) for bt in byteTimes[1:]]

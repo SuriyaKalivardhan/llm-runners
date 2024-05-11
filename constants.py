@@ -8,7 +8,9 @@ class AzureOpenAIConstansts:
         ModelVersion.gpt4t0125:'llm-runner-gpt4t-0125',
         ModelVersion.gpt4t1106:'llm-runner-gpt4t-1106',
         ModelVersion.gpt40613:'llm-runner-gpt4-0613',
-        ModelVersion.textembeddings3large:'llm-runner-textemb3-l'
+        ModelVersion.textembeddings3large:'llm-runner-textemb3-l',
+        ModelVersion.textembeddings3small:'llm-runner-textemb3-s',
+        ModelVersion.gpt35t0613:'llm-runner-gpt35t-0613'
 
     }
     ENDPOINTS = {
@@ -29,7 +31,9 @@ class OpenAIContants:
         ModelVersion.gpt4t0125:'gpt-4-0125-preview',
         ModelVersion.gpt4t1106:'gpt-4-1106-preview',
         ModelVersion.gpt40613:'gpt-4-0613',
-        ModelVersion.textembeddings3large:'text-embedding-3-large'
+        ModelVersion.textembeddings3large:'text-embedding-3-large',
+        ModelVersion.textembeddings3small:'text-embedding-3-small',
+        ModelVersion.gpt35t0613:'gpt-3.5-turbo-0613'
     }
 
 class WikiConstants:    
