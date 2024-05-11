@@ -1,7 +1,7 @@
 from structure import ServiceProvider, Region, RequestInput, ModelVersion, Environment, ResponseOutput
-from StreamingRequestHandler import StreamingRequestHandler
-from RequestHandler import RequestHandler
-from constants import ApplicationConstants
+from handlers.EmbeddingHandler import EmbeddingHandler
+from handlers.RequestHandler import RequestHandler
+from handlers.StreamingRequestHandler import StreamingRequestHandler
 from Utilities import Utilities
 from WikiClient import WikiClient
 import logging
@@ -18,7 +18,10 @@ class Inferencer:
     def __init__(self, environment:Environment, azure_region:Region):
         self.dataSourceClient = WikiClient()
         self.encoder = tiktoken.get_encoding("cl100k_base")
-
+        self.embedding_handlers = [
+            EmbeddingHandler(ServiceProvider.OpenAI),
+            EmbeddingHandler(ServiceProvider.AzureOpenAI, azure_region),
+        ]
         self.streaming_handlers = [
             StreamingRequestHandler(ServiceProvider.OpenAI),
             StreamingRequestHandler(ServiceProvider.AzureOpenAI, azure_region),
@@ -30,7 +33,7 @@ class Inferencer:
 
         self.metricsWriter = MetricsWriter(environment, azure_region)
 
-    def score_stream(self, candidates:tuple[int, int], model_versions: List[ModelVersion] = [ModelVersion.gpt4t0125]): #TODO: Update the function name - Not just streaming anymore. Include embeddings
+    def score(self, candidates:tuple[int, int], model_versions: List[ModelVersion] = [ModelVersion.gpt4t0125]): #TODO: Update the function name - Not just streaming anymore. Include embeddings
         Utilities.touch_for_liveness()
         for idx, (n_prompt, n_samples) in enumerate(candidates):
             request = self._getInput(model_versions[0], n_prompt, n_samples, True)
@@ -39,8 +42,9 @@ class Inferencer:
                 logging.info(f"{idx=} {request=}")
                 threads = []
 
-                if model_version in ModelVersion.embeddings_list():
-                    pass
+                if model_version in ModelVersion.embeddings_list():                
+                    for handler in self.embedding_handlers:
+                        threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
                 else:
                     for handler in self.streaming_handlers:
                         threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
