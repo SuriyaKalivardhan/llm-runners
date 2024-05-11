@@ -9,6 +9,7 @@ class ModelVersion(Enum):
     gpt4t0125 = 1
     gpt4t1106 = 2
     gpt40613 = 3
+    textembeddings3large = 4
 
     def as_list():
         return [e.name for e in ModelVersion]
@@ -16,6 +17,9 @@ class ModelVersion(Enum):
     def as_list_from_str(input:str):
         list_str = str.split(input,',')
         return [ModelVersion[item] for item in list_str]
+    
+    def embeddings_list():
+        return [ModelVersion.textembeddings3large]
 
 class Region(Enum):
     Global = 1

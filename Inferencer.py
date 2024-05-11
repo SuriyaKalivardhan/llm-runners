@@ -30,7 +30,7 @@ class Inferencer:
 
         self.metricsWriter = MetricsWriter(environment, azure_region)
 
-    def score_stream(self, candidates:tuple[int, int], model_versions: List[ModelVersion] = [ModelVersion.gpt4t0125]):
+    def score_stream(self, candidates:tuple[int, int], model_versions: List[ModelVersion] = [ModelVersion.gpt4t0125]): #TODO: Update the function name - Not just streaming anymore. Include embeddings
         Utilities.touch_for_liveness()
         for idx, (n_prompt, n_samples) in enumerate(candidates):
             request = self._getInput(model_versions[0], n_prompt, n_samples, True)
@@ -39,8 +39,11 @@ class Inferencer:
                 logging.info(f"{idx=} {request=}")
                 threads = []
 
-                for handler in self.streaming_handlers:
-                    threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
+                if model_version in ModelVersion.embeddings_list():
+                    pass
+                else:
+                    for handler in self.streaming_handlers:
+                        threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
 
                 for t in threads:
                     t.start()

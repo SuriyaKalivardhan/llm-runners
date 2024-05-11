@@ -12,14 +12,14 @@ def main(environment:Environment, region:Region, model_versions:List[ModelVersio
     candidates = Utilities.construct_candidates(rpm, num_prompts, num_samples)
     logging.info(candidates)
     inf:Inferencer  = Inferencer(environment, region)
-    inf.score_stream(candidates, model_versions)
+    inf.score(candidates, model_versions)
     inf.close()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-e', '--environment', type=str, default=Environment.Cloud.name)
+    parser.add_argument('-e', '--environment', type=str, default=Environment.Dev.name)
     parser.add_argument('-r', '--region', type=str, default=Region.EastUS.name)
-    parser.add_argument('-m', '--model_versions', type=str, default=ModelVersion.gpt4t0125.name)
+    parser.add_argument('-m', '--model_versions', type=str, default=ModelVersion.textembeddings3large.name)
     parser.add_argument('-rpm', '--request_per_minute', type=int, default=2)
     parser.add_argument('-np', '--num_prompts', type=int, default=sys.maxsize)
     parser.add_argument('-ns', '--num_samples', type=int, default=sys.maxsize)

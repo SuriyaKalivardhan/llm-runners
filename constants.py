@@ -7,7 +7,9 @@ class AzureOpenAIConstansts:
     MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
         ModelVersion.gpt4t0125:'llm-runner-gpt4t-0125',
         ModelVersion.gpt4t1106:'llm-runner-gpt4t-1106',
-        ModelVersion.gpt40613:'llm-runner-gpt4-0613'
+        ModelVersion.gpt40613:'llm-runner-gpt4-0613',
+        ModelVersion.textembeddings3large:'llm-runner-textemb3-l'
+
     }
     ENDPOINTS = {
         Region.EastUS:"https://eng-latency.openai.azure.com/",
@@ -26,7 +28,8 @@ class OpenAIContants:
     MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
         ModelVersion.gpt4t0125:'gpt-4-0125-preview',
         ModelVersion.gpt4t1106:'gpt-4-1106-preview',
-        ModelVersion.gpt40613:'gpt-4-0613'
+        ModelVersion.gpt40613:'gpt-4-0613',
+        ModelVersion.textembeddings3large:'text-embedding-3-large'
     }
 
 class WikiConstants:    
