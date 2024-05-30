@@ -23,15 +23,36 @@ class StreamingRequestHandler:
                 finish_reason:str = None
                 byteTimes = []
 
+                inputmessage = [
+                    {
+                        "role": "user",
+                        "content": req.Prompt,
+                    },
+                ]
+
+                if req.image_url != None:
+                    inputmessage = [
+                        {
+                            "role": "user",
+                            "content": [
+                                {
+                                    "type": "text",
+                                    "text": req.Prompt,
+                                },
+                                {
+                                    "type": "image_url",
+                                    "image_url": {
+                                        "url": req.image_url
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+
                 start = start_for_ttlt = time.time()        
                 response:Stream[ChatCompletionChunk] = self.client.chat.completions.create(
                     model=model_version,
-                    messages=[
-                        {
-                            "role": "user",
-                            "content": req.Prompt,
-                        },
-                    ],
+                    messages=inputmessage,
                     max_tokens=req.max_token,
                     stream=req.stream,
                 )
@@ -62,6 +83,7 @@ class StreamingRequestHandler:
                 samples_str = ' '.join(samples)
                 samples_str = ' '.join(samples_str.splitlines())
                 samples_str = samples_str.replace('\t', ' ')
+                print(samples)
                 result = ResponseOutput(samples_str, ttft, [ttbt], ttbt, ttlt, finish_reason, len(prompt_encoded), len(samples), 0) #TODO: calculate edit distance
                 return result
             except openai.RateLimitError as e:

@@ -17,9 +17,9 @@ def main(environment:Environment, region:Region, model_versions:List[ModelVersio
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-e', '--environment', type=str, default=Environment.Cloud.name)
-    parser.add_argument('-r', '--region', type=str, default=Region.EastUS.name)
-    parser.add_argument('-m', '--model_versions', type=str, default=ModelVersion.gpt4t0125.name)
+    parser.add_argument('-e', '--environment', type=str, default=Environment.Dev.name)
+    parser.add_argument('-r', '--region', type=str, default=Region.SouthCentralUS.name)
+    parser.add_argument('-m', '--model_versions', type=str, default=ModelVersion.gpt4o0513.name)
     parser.add_argument('-rpm', '--request_per_minute', type=int, default=2)
     parser.add_argument('-np', '--num_prompts', type=int, default=sys.maxsize)
     parser.add_argument('-ns', '--num_samples', type=int, default=sys.maxsize)

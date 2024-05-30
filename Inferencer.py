@@ -35,18 +35,22 @@ class Inferencer:
     def score(self, candidates:tuple[int, int], model_versions: List[ModelVersion] = [ModelVersion.gpt4t0125]): #TODO: Update the function name - Not just streaming anymore. Include embeddings
         Utilities.touch_for_liveness()
         for idx, (n_prompt, n_samples) in enumerate(candidates):
-            request = self._getInput(model_versions[0], n_prompt, n_samples, True)
+            text_only_request = self._getInput(model_versions[0], n_prompt, n_samples, True, includeImage=False)
             for model_version in model_versions:
-                request.model_version = model_version
-                logging.info(f"{idx=} {request=}")
+                text_only_request.model_version = model_version
+                logging.info(f"{idx=} {text_only_request=}")
                 threads = []
 
-                if model_version in ModelVersion.embeddings_list():                
+                if model_version in ModelVersion.vision_list():                    
+                    text_image_request = self._getInput(model_version, n_prompt, n_samples, True, includeImage=True)                    
+                    for handler in self.streaming_handlers:
+                        threads.append(threading.Thread(target=self.invokeHandler, args=(handler, text_image_request)))
+                elif model_version in ModelVersion.embeddings_list():
                     for handler in self.embedding_handlers:
-                        threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
+                        threads.append(threading.Thread(target=self.invokeHandler, args=(handler, text_only_request)))
                 else:
                     for handler in self.streaming_handlers:
-                        threads.append(threading.Thread(target=self.invokeHandler, args=(handler, request)))
+                        threads.append(threading.Thread(target=self.invokeHandler, args=(handler, text_only_request)))
 
                 for t in threads:
                     t.start()
@@ -71,12 +75,12 @@ class Inferencer:
     def close(self):
         self.metricsWriter.close()
 
-    def _getDataInput(self, n_prompt:int, n_samples:int):
+    def _getDataInputText(self, n_prompt:int, n_samples:int):
         token_len = 0
         total_len = n_prompt # + n_samples (Just n_prompt for now since we are not recording samples)
         logging.info(f"{n_prompt=} {n_samples=}")
         while token_len < total_len:
-            page, text = self.dataSourceClient.get_random_page_text()            
+            page, text = self.dataSourceClient.get_random_page_text()
             text = ' '.join(text.splitlines())
             text = text.replace('\t', ' ')
             #logging.info(f"Got {page=} of length {len(text)} for {total_len=} and {n_prompt=}")
@@ -92,7 +96,17 @@ class Inferencer:
             # samples = None
             #return (prompt, samples)
             return prompt
+
+    def _getDataInputTextAndImage(self):
+        prompt, imageUrl = self.dataSourceClient.get_random_page_textAndImage()
+        prompt = ' '.join(prompt.splitlines())
+        prompt = prompt.replace('\t', ' ')
+        return prompt, imageUrl
         
-    def _getInput(self, model_version: ModelVersion, n_prompt:int, n_samples:int, stream:bool) -> RequestInput:
-        prompt = self._getDataInput(n_prompt, n_samples)
-        return RequestInput(model_version, prompt, n_samples, stream, None)
+    def _getInput(self, model_version: ModelVersion, n_prompt:int, n_samples:int, stream:bool, includeImage:bool=False) -> RequestInput:
+        image_url:str = None
+        if includeImage:
+            prompt, image_url = self._getDataInputTextAndImage()
+        else:
+            prompt = self._getDataInputText(n_prompt, n_samples)
+        return RequestInput(model_version, prompt, n_samples, stream, None, image_url)

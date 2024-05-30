@@ -12,6 +12,7 @@ class ModelVersion(Enum):
     textembeddings3large = 4,
     textembeddings3small = 5,
     gpt35t0613 = 6
+    gpt4o0513 = 7
 
     def as_list():
         return [e.name for e in ModelVersion]
@@ -22,6 +23,9 @@ class ModelVersion(Enum):
     
     def embeddings_list():
         return [ModelVersion.textembeddings3large, ModelVersion.textembeddings3small]
+    
+    def vision_list():
+        return [ModelVersion.gpt4o0513]
 
 class Region(Enum):
     Global = 1
@@ -46,6 +50,7 @@ class RequestInput:
     max_token:int
     stream:bool
     expected_samples:str
+    image_url:str
 
 @dataclass
 class ResponseOutput:
