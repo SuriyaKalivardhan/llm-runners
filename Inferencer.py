@@ -38,17 +38,19 @@ class Inferencer:
             text_only_request = self._getInput(model_versions[0], n_prompt, n_samples, True, includeImage=False)
             for model_version in model_versions:
                 text_only_request.model_version = model_version
-                logging.info(f"{idx=} {text_only_request=}")
                 threads = []
 
-                if model_version in ModelVersion.vision_list():                    
-                    text_image_request = self._getInput(model_version, n_prompt, n_samples, True, includeImage=True)                    
+                if model_version in ModelVersion.vision_list():
+                    text_image_request = self._getInput(model_version, n_prompt, n_samples, True, includeImage=True)
+                    logging.info(f"{idx=} {text_image_request=}")
                     for handler in self.streaming_handlers:
                         threads.append(threading.Thread(target=self.invokeHandler, args=(handler, text_image_request)))
                 elif model_version in ModelVersion.embeddings_list():
+                    logging.info(f"{idx=} {text_only_request=}")
                     for handler in self.embedding_handlers:
                         threads.append(threading.Thread(target=self.invokeHandler, args=(handler, text_only_request)))
                 else:
+                    logging.info(f"{idx=} {text_only_request=}")
                     for handler in self.streaming_handlers:
                         threads.append(threading.Thread(target=self.invokeHandler, args=(handler, text_only_request)))
 
