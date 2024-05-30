@@ -83,7 +83,8 @@ class StreamingRequestHandler:
                 samples_str = ' '.join(samples)
                 samples_str = ' '.join(samples_str.splitlines())
                 samples_str = samples_str.replace('\t', ' ')
-                print(samples)
+                if req.image_url != None:
+                    logging.info(samples_str)
                 result = ResponseOutput(samples_str, ttft, [ttbt], ttbt, ttlt, finish_reason, len(prompt_encoded), len(samples), 0) #TODO: calculate edit distance
                 return result
             except openai.RateLimitError as e:
