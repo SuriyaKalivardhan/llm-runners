@@ -34,7 +34,7 @@ SwedenCentral|4/19/2024
 
 ### To onboard a new region:
 1. Add the new region [here](structure.py#L23)
-2. Push the changes to docker.io/suriyakalivardhan/llm-runner:v11 (ToDo: Automate this)
+2. Push the changes to docker.io/suriyakalivardhan/llm-runners:v15 (ToDo: Automate this)
 2. Deploy AzureOpenAI account in the regions (ToDo: Add script)
 3. Deploy the runners `az container create -f acidep.yml`
 
@@ -56,6 +56,7 @@ NorthCentralUS|gpt4t0125,gpt35t0613
 SwedenCentral|gpt40613,gpt4t1106,textembeddings3large
 UKSouth|gpt40613,gpt4t1106,gpt35t0613
 WestUS|gpt4t1106
+SouthCentralUS|gpt4o0513
 
 
 

@@ -38,5 +38,6 @@ NorthCentralUS: gpt4t0125,gpt35t0613
 SwedenCentral: gpt40613,gpt4t1106,textembeddings3large
 UKSouth: gpt40613,gpt4t1106,gpt35t0613
 WestUS: gpt4t1106
+SouthCentralUS: gpt4o0513
 
 
