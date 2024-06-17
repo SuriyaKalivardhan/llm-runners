@@ -57,6 +57,7 @@ SwedenCentral|gpt40613,gpt4t1106,textembeddings3large,gpt4t0409
 UKSouth|gpt40613,gpt4t1106,gpt35t0613
 WestUS|gpt4t1106
 SouthCentralUS|gpt4o0513
+EastUS2|gpt4t0409
 
 
 
