@@ -12,7 +12,8 @@ class ModelVersion(Enum):
     textembeddings3large = 4,
     textembeddings3small = 5,
     gpt35t0613 = 6
-    gpt4o0513 = 7
+    gpt4o0513 = 7,
+    gpt4t0409 = 8
 
     def as_list():
         return [e.name for e in ModelVersion]
@@ -39,6 +40,7 @@ class Region(Enum):
     AustraliaEast = 9
     JapanEast = 10
     SouthIndia = 11
+    EastUS2 = 12
 
     def as_list():
         return [e.name for e in Region]

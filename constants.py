@@ -5,6 +5,7 @@ class AzureOpenAIConstansts:
     API_VERSION:Final[str]="2024-02-01"
     API_KEY:Final[str]="AZURE_OPENAI_API_KEY"
     MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
+        ModelVersion.gpt4t0409:'llm-runner-gpt4t-0409',
         ModelVersion.gpt4t0125:'llm-runner-gpt4t-0125',
         ModelVersion.gpt4t1106:'llm-runner-gpt4t-1106',
         ModelVersion.gpt40613:'llm-runner-gpt4-0613',
@@ -16,6 +17,7 @@ class AzureOpenAIConstansts:
     }
     ENDPOINTS = {
         Region.EastUS:"https://eng-latency.openai.azure.com/",
+        Region.EastUS2:"https://eng-latency.openai.azure.com/",
         Region.NorthCentralUS:"https://eng-latency-ncus.openai.azure.com/",
         Region.SouthCentralUS:"https://eng-latency-scus.openai.azure.com/",
         Region.WestUS:"https://eng-latency-wus.openai.azure.com/",
@@ -25,6 +27,7 @@ class AzureOpenAIConstansts:
         Region.AustraliaEast:"https://australiaeast.api.cognitive.microsoft.com/",
         Region.JapanEast:"https://japaneast.api.cognitive.microsoft.com/",
         Region.SouthIndia:"https://southindia.api.cognitive.microsoft.com/",
+        Region.EastUS2:"https://eng-latency-eus2.openai.azure.com/",
     }
 
 class OpenAIContants:
@@ -35,7 +38,8 @@ class OpenAIContants:
         ModelVersion.textembeddings3large:'text-embedding-3-large',
         ModelVersion.textembeddings3small:'text-embedding-3-small',
         ModelVersion.gpt35t0613:'gpt-3.5-turbo-0613',
-        ModelVersion.gpt4o0513:'gpt-4o'
+        ModelVersion.gpt4o0513:'gpt-4o',
+        ModelVersion.gpt4t0409:'gpt-4-turbo-2024-04-09',
     }
 
 class WikiConstants:    
