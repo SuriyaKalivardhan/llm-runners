@@ -1,7 +1,7 @@
 from structure import ServiceProvider, Region, RequestInput, ModelVersion, Environment
 from handlers.EmbeddingHandler import EmbeddingHandler
 from handlers.RequestHandler import RequestHandler
-from handlers.StreamingRequestHandler import StreamingRequestHandler
+from handlers.StreamingRequestHandler import StreamingRequestHandler, AWSStreamingRequestHandler
 from Utilities import Utilities
 from WikiClient import WikiClient
 import logging
@@ -14,23 +14,26 @@ from typing import List
 logging.basicConfig(level=logging.INFO)
 
 class Inferencer:
-    def __init__(self, environment:Environment, azure_region:Region):
+    def __init__(self, environment:Environment, region:Region):
         self.dataSourceClient = WikiClient()
-        self.encoder = tiktoken.get_encoding("cl100k_base")
+        self.encoder = tiktoken.get_encoding("cl100k_base") #TODO: Figure out what is the right tokenization by Model version. For now assume everone used BPE 100k. This is not true in GPT2 which is 50k. Explore Claude and Gemini
         self.embedding_handlers = [
             EmbeddingHandler(ServiceProvider.OpenAI),
-            EmbeddingHandler(ServiceProvider.AzureOpenAI, azure_region),
+            EmbeddingHandler(ServiceProvider.AzureOpenAI, region),
+            #TODO: Add AWS embedding handler
         ]
         self.streaming_handlers = [
             StreamingRequestHandler(ServiceProvider.OpenAI),
-            StreamingRequestHandler(ServiceProvider.AzureOpenAI, azure_region),
+            StreamingRequestHandler(ServiceProvider.AzureOpenAI, region),
+            AWSStreamingRequestHandler(region),
         ]
         self.non_streaming_handlers = [
             RequestHandler(ServiceProvider.OpenAI),
-            RequestHandler(ServiceProvider.AzureOpenAI, azure_region),
+            RequestHandler(ServiceProvider.AzureOpenAI, region),
+            #TODO: Add AWS non-streaming handler
         ]
 
-        self.metricsWriter = MetricsWriter(environment, azure_region)
+        self.metricsWriter = MetricsWriter(environment, region)
 
     def score(self, candidates:tuple[int, int], model_versions: List[ModelVersion] = [ModelVersion.gpt4t0125]): #TODO: Update the function name - Not just streaming anymore. Include embeddings
         Utilities.touch_for_liveness()
@@ -70,6 +73,8 @@ class Inferencer:
         requestTime = datetime.now(timezone.utc)
         try:
             response = handler.score(request)
+            if response is None:
+                return
             self.metricsWriter.writeMetrics(requestTime, handler.provider, request, response)
         except Exception as e:
             logging.critical(traceback.format_exc())

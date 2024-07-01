@@ -42,6 +42,21 @@ class OpenAIContants:
         ModelVersion.gpt4t0409:'gpt-4-turbo-2024-04-09',
     }
 
+class AWSConstants:
+    Service:Final[str] = 'bedrock-runtime'
+    KEY_ID:Final[str]="AWS_ACCESS_KEY_ID"
+    ACCESS_KEY:Final[str]="AWS_SECRET_ACCESS_KEY"
+    MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
+        ModelVersion.claude35sonnet20240620v1:'anthropic.claude-3-5-sonnet-20240620-v1:0',
+        ModelVersion.claude3sonnet20240229v1:'anthropic.claude-3-sonnet-20240229-v1:0',
+        ModelVersion.claude3haiku20240307v1:'anthropic.claude-3-haiku-20240307-v1:0',
+        ModelVersion.claude3opus20240229v1:'anthropic.claude-3-opus-20240229-v1:0',
+    }
+    Region = {
+        Region.EastUS:"us-east-1",
+        Region.WestUS:"us-west-2",
+    }
+
 class WikiConstants:    
     RANDOM_URL: Final[str] = 'https://en.wikipedia.org/wiki/Special:Random'
     WIKI_PREFIX_LEN: Final[int] = len('https://en.wikipedia.org/wiki/')

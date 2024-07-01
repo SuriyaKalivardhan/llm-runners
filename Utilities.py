@@ -1,8 +1,9 @@
 from openai import OpenAI, AzureOpenAI
-from constants import OpenAIContants, AzureOpenAIConstansts, ModelVersion, ApplicationConstants
+from constants import OpenAIContants, AzureOpenAIConstansts, ModelVersion, ApplicationConstants, AWSConstants
 from structure import ServiceProvider, Region
 import logging, os, time
 from io import TextIOWrapper
+import boto3
 import random
 import sys
 from pathlib import Path
@@ -10,14 +11,19 @@ logging.basicConfig(level=logging.INFO)
 
 class Utilities:
     def get_model_version(model_version:ModelVersion, provider:ServiceProvider) -> str:
-        if provider == ServiceProvider.OpenAI:            
-            return OpenAIContants.MODEL_DEPLOYMENTS[model_version]
-        elif provider == ServiceProvider.AzureOpenAI:
-            return AzureOpenAIConstansts.MODEL_DEPLOYMENTS[model_version]
-        else:
+        try:
+            if provider == ServiceProvider.OpenAI:
+                return OpenAIContants.MODEL_DEPLOYMENTS[model_version]
+            elif provider == ServiceProvider.AzureOpenAI:
+                return AzureOpenAIConstansts.MODEL_DEPLOYMENTS[model_version]
+            elif provider == ServiceProvider.AWS:
+                return AWSConstants.MODEL_DEPLOYMENTS[model_version]
+            else:
+                return None
+        except KeyError:
             return None
 
-    def getClient(provider:ServiceProvider, region:Region = None) -> OpenAI | AzureOpenAI:
+    def getClient(provider:ServiceProvider, region:Region = None):
         if provider == ServiceProvider.OpenAI:
             return OpenAI(
                 max_retries=0
@@ -28,7 +34,9 @@ class Utilities:
                 api_version=AzureOpenAIConstansts.API_VERSION,
                 azure_endpoint = AzureOpenAIConstansts.ENDPOINTS[region],
                 max_retries=0
-        )
+            )
+        elif provider == ServiceProvider.AWS:
+            return boto3.client(AWSConstants.Service, AWSConstants.Region[region])
 
     def create_and_get_new_file() -> TextIOWrapper:
         timestr = time.strftime("%Y%m%d-%H%M%S")

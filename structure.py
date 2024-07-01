@@ -4,6 +4,7 @@ from dataclasses import dataclass
 class ServiceProvider(Enum):
     OpenAI = 1
     AzureOpenAI = 2
+    AWS = 3
 
 class ModelVersion(Enum):
     gpt4t0125 = 1
@@ -13,7 +14,11 @@ class ModelVersion(Enum):
     textembeddings3small = 5,
     gpt35t0613 = 6
     gpt4o0513 = 7,
-    gpt4t0409 = 8
+    gpt4t0409 = 8,
+    claude3sonnet20240229v1 = 9,
+    claude3haiku20240307v1 = 10,
+    claude3opus20240229v1 = 11,
+    claude35sonnet20240620v1 = 12,
 
     def as_list():
         return [e.name for e in ModelVersion]
