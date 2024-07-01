@@ -31,6 +31,7 @@ NorthCentralUS|4/17/2024
 WestUS|4/17/2024
 USSouth|4/18/2024
 SwedenCentral|4/19/2024
+AWS|7/1/2024
 
 ### To onboard a new region:
 1. Add the new region [here](structure.py#L23)
@@ -44,18 +45,18 @@ SwedenCentral|4/19/2024
 
 
 
-### Latest update (5/11) ###
+### Latest update (7/1) ###
 
 Region|ModelVersion
 :-:|:-
-EastUS|gpt4t0125,gpt35t0613,textembeddings3large,textembeddings3small
+EastUS|gpt4t0125,gpt35t0613,textembeddings3large,textembeddings3small,claude3sonnet20240229v1,claude3haiku20240307v1,claude35sonnet20240620v1
 FranceCentral|gpt4t1106,gpt35t0613,textembeddings3large
 IndiaSouth|gpt4t1106
 JapanEast|gpt35t0613
 NorthCentralUS|gpt4t0125,gpt35t0613
 SwedenCentral|gpt40613,gpt4t1106,textembeddings3large,gpt4t0409
 UKSouth|gpt40613,gpt4t1106,gpt35t0613
-WestUS|gpt4t1106
+WestUS|gpt4t1106,claude3opus20240229v1
 SouthCentralUS|gpt4o0513
 EastUS2|gpt4t0409
 
