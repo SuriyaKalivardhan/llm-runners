@@ -19,7 +19,7 @@ class Utilities:
             elif provider == ServiceProvider.AzureOpenAI:
                 return AzureOpenAIConstansts.MODEL_DEPLOYMENTS[model_version]
             elif provider == ServiceProvider.AWS:
-                return AWSConstants.MODEL_DEPLOYMENTS[model_version]            
+                return AWSConstants.MODEL_DEPLOYMENTS[model_version]
             elif provider == ServiceProvider.Google:
                 return GoogleConstants.MODEL_DEPLOYMENTS[model_version]
             else:
