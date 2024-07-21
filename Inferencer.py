@@ -1,7 +1,7 @@
 from structure import ServiceProvider, Region, RequestInput, ModelVersion, Environment
 from handlers.EmbeddingHandler import EmbeddingHandler
 from handlers.RequestHandler import RequestHandler
-from handlers.StreamingRequestHandler import StreamingRequestHandler, AWSStreamingRequestHandler
+from handlers.StreamingRequestHandler import StreamingRequestHandler, AWSStreamingRequestHandler, GoogleStreamingRequestHandler
 from Utilities import Utilities
 from WikiClient import WikiClient
 import logging
@@ -26,6 +26,7 @@ class Inferencer:
             StreamingRequestHandler(ServiceProvider.OpenAI),
             StreamingRequestHandler(ServiceProvider.AzureOpenAI, region),
             AWSStreamingRequestHandler(region),
+            GoogleStreamingRequestHandler(ServiceProvider.Google),
         ]
         self.non_streaming_handlers = [
             RequestHandler(ServiceProvider.OpenAI),

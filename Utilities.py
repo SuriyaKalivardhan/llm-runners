@@ -1,12 +1,14 @@
 from openai import OpenAI, AzureOpenAI
-from constants import OpenAIContants, AzureOpenAIConstansts, ModelVersion, ApplicationConstants, AWSConstants
+from constants import OpenAIContants, AzureOpenAIConstansts, ModelVersion, ApplicationConstants, AWSConstants, GoogleConstants
 from structure import ServiceProvider, Region
 import logging, os, time
 from io import TextIOWrapper
 import boto3
+import google.generativeai as genai
 import random
 import sys
 from pathlib import Path
+
 logging.basicConfig(level=logging.INFO)
 
 class Utilities:
@@ -17,7 +19,9 @@ class Utilities:
             elif provider == ServiceProvider.AzureOpenAI:
                 return AzureOpenAIConstansts.MODEL_DEPLOYMENTS[model_version]
             elif provider == ServiceProvider.AWS:
-                return AWSConstants.MODEL_DEPLOYMENTS[model_version]
+                return AWSConstants.MODEL_DEPLOYMENTS[model_version]            
+            elif provider == ServiceProvider.Google:
+                return GoogleConstants.MODEL_DEPLOYMENTS[model_version]
             else:
                 return None
         except KeyError:
@@ -37,6 +41,8 @@ class Utilities:
             )
         elif provider == ServiceProvider.AWS:
             return boto3.client(AWSConstants.Service, AWSConstants.Region[region])
+        elif provider == ServiceProvider.Google:
+            return genai
 
     def create_and_get_new_file() -> TextIOWrapper:
         timestr = time.strftime("%Y%m%d-%H%M%S")

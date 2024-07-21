@@ -57,6 +57,17 @@ class AWSConstants:
         Region.WestUS:"us-west-2",
     }
 
+class GoogleConstants:
+    ACCESS_KEY:Final[str]="GOOGLE_API_KEY"
+    MODEL_DEPLOYMENTS: dict[ModelVersion, str] = {
+        ModelVersion.gemini15flash:'gemini-1.5-flash',
+        ModelVersion.gemini15pro:'gemini-1.5-pro',
+    }
+    Region = {
+        Region.EastUS:"us-east4 ",
+        Region.UKSouth:"europe-west2",
+    }
+
 class WikiConstants:    
     RANDOM_URL: Final[str] = 'https://en.wikipedia.org/wiki/Special:Random'
     WIKI_PREFIX_LEN: Final[int] = len('https://en.wikipedia.org/wiki/')

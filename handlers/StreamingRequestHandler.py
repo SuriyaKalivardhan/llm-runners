@@ -159,3 +159,55 @@ class AWSStreamingRequestHandler(StreamingRequestHandler):
                 logging.error(repr(e))
                 time.sleep(back_off)
                 back_off = back_off * 1.5
+
+class GoogleStreamingRequestHandler(StreamingRequestHandler):
+    def __init__(self, region:Region):
+        super().__init__(ServiceProvider.Google, region)
+
+    def score(self, req:RequestInput) -> ResponseOutput:
+        model_version:str = Utilities.get_model_version(req.model_version, self.provider)
+        if model_version is None:
+            return None
+        model = self.client.GenerativeModel('gemini-1.5-flash')
+        back_off = 5.0
+        while True:
+            try:
+                samples = []
+                finish_reason:str = None
+                byteTimes = []
+
+                start = start_for_ttlt = time.time()
+                response = model.generate_content(req.Prompt, generation_config={"max_output_tokens":req.max_token}, stream=True)
+
+                lastchunk = None
+                for chunk in response:
+                    lastchunk = chunk
+                    end = time.time()
+                    samples.append(chunk.text)
+                    byteTimes.append(end-start)
+                    start=end
+
+                finish_reason = lastchunk.candidates[0].FinishReason(lastchunk.candidates[0].finish_reason).name
+                inputTokens = lastchunk.usage_metadata.prompt_token_count
+                outputTokens = lastchunk.usage_metadata.candidates_token_count
+
+                ttft = byteTimes[0]
+                ttlt = end-start_for_ttlt
+                ttbt = (ttlt-ttft)/outputTokens
+
+                ttft = '%.6f'%(ttft)
+                #tbt = ['%.6f'%(bt) for bt in byteTimes[1:]]
+                ttlt = '%.6f'%(ttlt)
+                ttbt = '%.6f'%(ttbt)
+
+                samples_str = ' '.join(samples)
+                samples_str = ' '.join(samples_str.splitlines())
+                samples_str = samples_str.replace('\t', ' ')
+                if req.image_url != None:
+                    logging.info(samples_str)
+                result = ResponseOutput(samples_str, ttft, [ttbt], ttbt, ttlt, finish_reason, inputTokens, outputTokens, 0) #TODO: calculate edit distance
+                return result
+            except (ClientError, Exception) as e:
+                logging.error(repr(e))
+                time.sleep(back_off)
+                back_off = back_off * 1.5
