@@ -30,13 +30,13 @@ az cognitiveservices account keys list --name eng-latency-uks  --subscription 6a
 
 
 
-EastUS: gpt4t0125,gpt35t0613,textembeddings3large,textembeddings3small,claude3sonnet20240229v1,claude3haiku20240307v1,claude35sonnet20240620v1
+EastUS: gpt4t0125,gpt35t0613,textembeddings3large,textembeddings3small,claude3sonnet20240229v1,claude3haiku20240307v1,claude35sonnet20240620v1,gemini15flash,gemini15pro
 FranceCentral: gpt4t1106,gpt35t0613,textembeddings3large
 IndiaSouth: gpt4t1106
 JapanEast: gpt35t0613
 NorthCentralUS: gpt4t0125,gpt35t0613
 SwedenCentral: gpt40613,gpt4t1106,textembeddings3large,gpt4t0409
-UKSouth: gpt40613,gpt4t1106,gpt35t0613
+UKSouth: gpt40613,gpt4t1106,gpt35t0613,gemini15flash,gemini15pro
 WestUS: gpt4t1106,claude3opus20240229v1
 SouthCentralUS: gpt4o0513
 EastUS2: gpt4t0409

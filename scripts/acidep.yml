@@ -1,6 +1,6 @@
 apiVersion: 2019-12-01
-location: FranceCentral
-name: llm-runner-frac
+location: UKSouth
+name: llm-runner-uks
 identity: 
   type: UserAssigned
   userAssignedIdentities:
@@ -11,20 +11,20 @@ properties:
   containers:
   - name: llm-runner
     properties:
-      image: suriyakalivardhan/llm-runners:v12
+      image: llmrunnersacr.azurecr.io/suriyakalivardhan/llm-runners:v18
       command:
         - "python"
         - "runner.py"
-        - "-r=FranceCentral"
-        - "-m=gpt4t1106"
+        - "-r=UKSouth"
+        - "-m=gpt40613,gpt4t1106,gpt35t0613,gemini15flash,gemini15pro"
         - "-rpm=2"
         - "-np=1000"
         - "-ns=200"
       ports: []
       resources:
         requests:
-          cpu: 2.0
-          memoryInGB: 4.0
+          cpu: 4.0
+          memoryInGB: 8.0
       livenessProbe:
         exec:
             command:
@@ -36,6 +36,17 @@ properties:
         secureValue: abc
       - name: AZURE_OPENAI_API_KEY
         secureValue: def
+      - name: AWS_ACCESS_KEY_ID
+        secureValue: ghi
+      - name: AWS_SECRET_ACCESS_KEY
+        secureValue: jkl
+      - name: GOOGLE_API_KEY
+        secureValue: mno
+  imageRegistryCredentials: # Credentials to pull a private image
+  - server: llmrunnersacr.azurecr.io
+    #identity: /subscriptions/ea4faa5b-5e44-4236-91f6-5483d5b17d14/resourcegroups/llm-runners/providers/Microsoft.ManagedIdentity/userAssignedIdentities/llm-runner    
+    username: llmrunnersacr
+    password: pqr
   osType: Linux
   restartPolicy: Always
 tags: null
