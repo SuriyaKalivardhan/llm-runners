@@ -55,6 +55,8 @@ class AWSConstants:
     Region = {
         Region.EastUS:"us-east-1",
         Region.WestUS:"us-west-2",
+        Region.UKSouth:"eu-west-2",
+        # TODO: FIll all region or converge region map
     }
 
 class GoogleConstants:
@@ -66,6 +68,7 @@ class GoogleConstants:
     Region = {
         Region.EastUS:"us-east4 ",
         Region.UKSouth:"europe-west2",
+        # TODO: FIll all region or converge region map
     }
 
 class WikiConstants:    
