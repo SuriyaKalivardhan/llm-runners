@@ -11,30 +11,35 @@ class ModelVersion(Enum):
     gpt4t0125 = 1
     gpt4t1106 = 2
     gpt40613 = 3
-    textembeddings3large = 4,
-    textembeddings3small = 5,
+    textembeddings3large = 4
+    textembeddings3small = 5
     gpt35t0613 = 6
-    gpt4o0513 = 7,
-    gpt4t0409 = 8,
-    claude3sonnet20240229v1 = 9,
-    claude3haiku20240307v1 = 10,
-    claude3opus20240229v1 = 11,
-    claude35sonnet20240620v1 = 12,
-    gemini15flash = 13,
-    gemini15pro = 14,
+    gpt4o0513 = 7
+    gpt4t0409 = 8
+    claude3sonnet20240229v1 = 9
+    claude3haiku20240307v1 = 10
+    claude3opus20240229v1 = 11
+    claude35sonnet20240620v1 = 12
+    gemini15flash = 13
+    gemini15pro = 14
+    gpt4omini = 15
 
+    @staticmethod
     def as_list():
         return [e.name for e in ModelVersion]
 
+    @staticmethod
     def as_list_from_str(input:str):
         list_str = str.split(input,',')
         return [ModelVersion[item] for item in list_str]
-    
+
+    @staticmethod
     def embeddings_list():
         return [ModelVersion.textembeddings3large, ModelVersion.textembeddings3small]
-    
+
+    @staticmethod
     def vision_list():
-        return [ModelVersion.gpt4o0513]
+        return [ModelVersion.gpt4o0513, ModelVersion.gpt4omini]
 
 class Region(Enum):
     Global = 1
@@ -50,6 +55,7 @@ class Region(Enum):
     SouthIndia = 11
     EastUS2 = 12
 
+    @staticmethod
     def as_list():
         return [e.name for e in Region]
 
