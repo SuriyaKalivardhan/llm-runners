@@ -22,7 +22,7 @@ class ModelVersion(Enum):
     claude35sonnet20240620v1 = 12
     gemini15flash = 13
     gemini15pro = 14
-    gpt4omini = 15
+    gpt4omini0718 = 15
 
     @staticmethod
     def as_list():
@@ -39,7 +39,7 @@ class ModelVersion(Enum):
 
     @staticmethod
     def vision_list():
-        return [ModelVersion.gpt4o0513, ModelVersion.gpt4omini]
+        return [ModelVersion.gpt4o0513, ModelVersion.gpt4omini0718]
 
 class Region(Enum):
     Global = 1

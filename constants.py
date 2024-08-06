@@ -13,6 +13,7 @@ class AzureOpenAIConstansts:
         ModelVersion.textembeddings3small:'llm-runner-textemb3-s',
         ModelVersion.gpt35t0613:'llm-runner-gpt35t-0613',
         ModelVersion.gpt4o0513:'llm-runner-gpt40-0513',
+        ModelVersion.gpt4omini0718:'llm-runner-gpt4o-mini-0718',
     }
     ENDPOINTS = {
         Region.EastUS:"https://eng-latency.openai.azure.com/",
@@ -38,7 +39,7 @@ class OpenAIContants:
         ModelVersion.gpt35t0613:'gpt-3.5-turbo-0613',
         ModelVersion.gpt4o0513:'gpt-4o',
         ModelVersion.gpt4t0409:'gpt-4-turbo-2024-04-09',
-        ModelVersion.gpt4omini:'gpt-4o-mini',
+        ModelVersion.gpt4omini0718: 'gpt-4o-mini',
     }
 
 class AWSConstants:
